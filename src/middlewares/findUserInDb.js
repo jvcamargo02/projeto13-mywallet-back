@@ -4,13 +4,15 @@ export async function findUserInDb(req, res, next) {
 
     const { authorization } = req.headers
     const token = authorization?.replace("Bearer ", "")
-    const { id } = await db.collection("sessions").findOne({ token })
+    const user = await db.collection("sessions").findOne({ token })
 
-    if (!id) {
+    console.log(user)
+
+    if (user === null ) {
         return res.status(498).send("Token expired or invalid. You have to reconnect to the site")
     }
 
-    res.locals.userId = { id }
+    res.locals.userId = user.id
 
     next()
 }

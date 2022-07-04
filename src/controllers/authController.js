@@ -33,7 +33,8 @@ export async function signUp(req, res) {
         await db.collection("users").insertOne({
             name,
             email,
-            passwordCrypt
+            passwordCrypt,
+            transactions: []
         })
 
         res.status(201).send("Created user")

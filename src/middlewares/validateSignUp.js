@@ -1,6 +1,5 @@
 import joi from "joi"
 import { hashSync } from "bcrypt"
-import { nextTick } from "process"
 
 export function validateSignUp(req, res, next) {
 

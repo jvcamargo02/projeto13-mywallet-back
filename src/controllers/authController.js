@@ -1,17 +1,17 @@
-import {db} from "../dbConfig/mongo.js"
+import { db } from "../dbConfig/mongo.js"
 
 export async function loginUser(req, res) {
-    
-    const { user } = req.body
-    
 
+    const { user } = res.locals
 
-    return("Oi")
+    console.log(user)
+
+    res.send("Oi")
 }
 
-export async function signUp(req,res){
-   
-    const { name, email, passwordCrypt }  = res.locals.user
+export async function signUp(req, res) {
+
+    const { name, email, passwordCrypt } = res.locals.user
 
 
     try {

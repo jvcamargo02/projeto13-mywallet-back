@@ -1,12 +1,27 @@
 import { db } from "../dbConfig/mongo.js"
+import {v4 as uuid} from "uuid"
 
 export async function loginUser(req, res) {
 
-    const { user } = res.locals
+    const { name, _id } = res.locals.user
+    const token = uuid()
 
-    console.log(user)
 
-    res.send("Oi")
+    try {
+         await db.collection("sessions").insertOne({
+            id: _id,
+            token
+        }) 
+
+        const bodyResponse = {
+            token,
+            name
+        }
+
+        res.status(200).send(bodyResponse)
+    } catch {
+        res.status(500).send("An error occurred. Please try again later.")
+    }
 }
 
 export async function signUp(req, res) {

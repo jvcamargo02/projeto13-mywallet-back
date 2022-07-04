@@ -24,7 +24,7 @@ export async function validateUser(req, res, next) {
        return res.status(401).send("Invalid e-mail or password")
     }
 
-    delete req.body.password
+    delete [req.body.password, user.passwordCrypt]
 
     res.locals.user = user
 

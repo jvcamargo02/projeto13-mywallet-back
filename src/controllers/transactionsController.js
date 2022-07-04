@@ -2,13 +2,12 @@ import { db } from "../dbConfig/mongo.js"
 
 export async function getTransactions(req, res) {
 
-    const id = res.locals.userId
-    console.log(id)
+    const userId = res.locals.userId
 
     try {
-        const dataUser = await db.collection("users").findOne({ _id: id})
+        const { transactions } = await db.collection("users").findOne({ _id: userId })
 
-        res.status(200).send(dataUser)
+        res.status(200).send(transactions)
     } catch {
         res.status(500).send("An error occurred. Please try again later.")
     }
@@ -25,9 +24,8 @@ export async function postInflow(req, res) {
         await db.collection("users").updateOne({ _id: id },
             {
                 $set: {
-                    transactions: [{
-                        ...transactions,   
-                    }, {
+                    transactions: [
+                        ...transactions,{
                         value,
                         description,
                         type: "inflow"
@@ -51,9 +49,8 @@ export async function postOutflow(req, res) {
         await db.collection("users").updateOne({ _id: id },
             {
                 $set: {
-                    transactions: [{
-                        ...transactions,   
-                    }, {
+                    transactions: [
+                        ...transactions,{
                         value,
                         description,
                         type: "inflow"

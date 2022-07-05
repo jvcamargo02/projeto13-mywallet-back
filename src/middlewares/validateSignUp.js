@@ -1,9 +1,11 @@
 import joi from "joi"
 import { hashSync } from "bcrypt"
+import { db } from "../dbConfig/mongo.js"
 
-export function validateSignUp(req, res, next) {
+export async function validateSignUp(req, res, next) {
 
     const { name, email, password } = req.body
+    const user = await db.collection("users").findOne({ email })
 
     const signUpSchema = joi.object({
         name: joi.string().required(),
@@ -15,6 +17,10 @@ export function validateSignUp(req, res, next) {
 
     if (error) {
         return res.status(406).send(error.details[0].message)
+    }
+
+    if (user) {
+        return res.status(401).send("This e-email already exists")
     }
 
     const passwordCrypt = hashSync(password, 10)

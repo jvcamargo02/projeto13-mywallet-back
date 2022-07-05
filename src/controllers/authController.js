@@ -4,7 +4,16 @@ import {v4 as uuid} from "uuid"
 export async function loginUser(req, res) {
 
     const { name, _id } = res.locals.user
+    const userSession = await db.collection("sessions").findOne({
+        id: _id
+    })
     const token = uuid()
+
+    if (userSession) {
+        await db.collection("sessions").deleteOne({
+            id: _id
+        })
+    }
 
 
     try {
